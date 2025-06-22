@@ -1,0 +1,133 @@
+/* Custom colors and fonts */
+body {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Purple accent color */
+.text-purple {
+  color: #a78bfa !important;
+}
+
+/* Gradient button for Add Task and modal submit */
+.btn-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  border: none;
+  color: white !important;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-gradient:hover,
+.btn-gradient:focus {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.9);
+  outline: none;
+}
+
+/* Table rounded corners */
+.user-table {
+  border-collapse: separate !important;
+  border-spacing: 0 0.75rem !important; /* vertical spacing between rows */
+}
+.user-table thead tr th:first-child {
+  border-top-left-radius: 1rem;
+}
+.user-table thead tr th:last-child {
+  border-top-right-radius: 1rem;
+}
+.user-table tbody tr {
+  border-radius: 1rem;
+  transition: background-color 0.3s ease;
+  background-color: #2a2a42 !important; /* deep bluish bg for rows */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.user-table tbody tr:hover {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Table text colors */
+.user-table tbody td.fw-semibold {
+  color: #d8b4fe !important;
+}
+.user-table tbody td.text-info {
+  color: #818cf8 !important; /* lighter blue for role */
+}
+.user-table tbody td.fst-italic {
+  color: #b0b0c3 !important;
+}
+.user-table tbody td.text-muted {
+  color: #9ca3af !important;
+}
+
+/* Action buttons style */
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #8b5cf6;
+  padding: 0.3rem;
+  border-radius: 50%;
+  transition: background-color 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-icon:hover,
+.btn-icon:focus {
+  background-color: #8b5cf6;
+  color: white;
+  outline: none;
+  box-shadow: 0 0 8px #8b5cf6;
+}
+
+/* Specific buttons to differentiate */
+.btn-icon-edit {
+  font-size: 1.3rem;
+}
+.btn-icon-delete {
+  font-size: 1.3rem;
+}
+
+/* Dark themed form controls (Bootstrap override) */
+.form-control-dark {
+  background-color: #2d2d44;
+  color: #ddd;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.7);
+  transition: box-shadow 0.3s ease;
+}
+.form-control-dark:focus {
+  background-color: #3b3b5a;
+  box-shadow: 0 0 12px #8b5cf6;
+  color: #eee;
+  outline: none;
+}
+.form-select-dark {
+  background-color: #2d2d44;
+  color: #ddd;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.7);
+  transition: box-shadow 0.3s ease;
+}
+.form-select-dark:focus {
+  background-color: #3b3b5a;
+  box-shadow: 0 0 12px #8b5cf6;
+  color: #eee;
+  outline: none;
+}
+
+/* Modal adjustments */
+.modal-content.bg-secondary {
+  background-color: #1e1e2f !important;
+  border-radius: 1.25rem !important;
+  padding: 1.5rem 2.5rem !important;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+  color: #ddd;
+}
+
+/* Responsive adjustments for smaller devices */
+@media (max-width: 575.98px) {
+  .btn-gradient {
+    width: 100%;
+  }
+}

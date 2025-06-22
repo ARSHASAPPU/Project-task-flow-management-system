@@ -1,0 +1,126 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>User Task Page - Project Task Management System</title>
+<link rel="stylesheet" href="{% static 'CSS/user_task.css'%}"
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+<body>
+<header class="d-flex align-items-center">
+  <div class="container">
+    <div class="logo" aria-label="Project Task Management System">TaskManager</div>
+  </div>
+</header>
+
+<main class="container my-4" role="main" aria-labelledby="pageTitle">
+  <h1 id="pageTitle" class="fw-bold fs-2">My Tasks</h1>
+
+  <section aria-label="Task filters" class="filters d-flex flex-wrap align-items-center gap-3 mt-4">
+    <div class="d-flex align-items-center">
+      <label for="filterProject" class="me-2 fw-semibold mb-0">Filter by Project:</label>
+      <select id="filterProject" class="form-select" aria-controls="tasksTable" aria-label="Filter tasks by project">
+        <option value="">All Projects</option>
+        <option value="project1">Project Alpha</option>
+        <option value="project2">Project Beta</option>
+        <option value="project3">Project Gamma</option>
+      </select>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <label for="filterPriority" class="me-2 fw-semibold mb-0">Filter by Priority:</label>
+      <select id="filterPriority" class="form-select" aria-controls="tasksTable" aria-label="Filter tasks by priority level">
+        <option value="">All Priorities</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="main-content mt-4">
+    <div class="table-responsive">
+      <table id="tasksTable" class="table align-middle" aria-describedby="tasksDescription" role="grid" tabindex="0">
+        <caption id="tasksDescription" class="visually-hidden">
+          Table listing all tasks assigned to the logged-in user. Columns are task title, project, status, priority, deadline, and actions.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Task Title</th>
+            <th scope="col">Project</th>
+            <th scope="col">Status</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Deadline</th>
+            <th scope="col" class="text-center" aria-label="Actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td tabindex="0" data-label="Task Title">Fix login bug</td>
+            <td data-label="Project">Project Alpha</td>
+            <td data-label="Status">
+              <select class="form-select status-select" aria-label="Update status for Fix login bug" style="min-width: 130px;">
+                <option>To Do</option>
+                <option selected>In Progress</option>
+                <option>Completed</option>
+              </select>
+            </td>
+            <td data-label="Priority"><span class="priority-label priority-high">High</span></td>
+            <td data-label="Deadline" class="deadline">2024-06-18</td>
+            <td data-label="Actions" class="text-center">
+              <button class="btn btn-update" aria-label="Update status for Fix login bug">Update</button>
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="0" data-label="Task Title">Design new UI mockups</td>
+            <td data-label="Project">Project Beta</td>
+            <td data-label="Status">
+              <select class="form-select status-select" aria-label="Update status for Design new UI mockups" style="min-width: 130px;">
+                <option selected>To Do</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+              </select>
+            </td>
+            <td data-label="Priority"><span class="priority-label priority-medium">Medium</span></td>
+            <td data-label="Deadline" class="deadline">2024-06-24</td>
+            <td data-label="Actions" class="text-center">
+              <button class="btn btn-update" aria-label="Update status for Design new UI mockups">Update</button>
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="0" data-label="Task Title">Write documentation</td>
+            <td data-label="Project">Project Gamma</td>
+            <td data-label="Status">
+              <select class="form-select status-select" aria-label="Update status for Write documentation" style="min-width: 130px;">
+                <option>To Do</option>
+                <option>In Progress</option>
+                <option selected>Completed</option>
+              </select>
+            </td>
+            <td data-label="Priority"><span class="priority-label priority-low">Low</span></td>
+            <td data-label="Deadline" class="deadline">2024-06-30</td>
+            <td data-label="Actions" class="text-center">
+              <button class="btn btn-update" aria-label="Update status for Write documentation">Update</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <section class="progress-container" aria-label="Task completion progress">
+      <div class="progress-label fw-semibold mb-2">Overall Progress</div>
+      <div class="progress progress-bar-custom" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar-fill" style="width: 33%;"></div>
+      </div>
+      <div class="progress-text mt-2">3 of 9 tasks completed</div>
+    </section>
+  </section>
+</main>
+
+</body>
+</html>
+

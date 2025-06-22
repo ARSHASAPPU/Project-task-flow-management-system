@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin - Register New User | Project Task Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="{% static 'CSS/reg.css'%}" rel="stylesheet" />
+</head>
+<body>
+    <main class="register-container shadow">
+        <h2>Register New User</h2>
+        <form id="registerForm" method="POST" action="{% url 'register_page' %}" novalidate>
+        {% csrf_token %}
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="fullName" 
+                    placeholder="Enter full name" 
+                    required 
+                    minlength="3"
+                    />
+                <div class="invalid-feedback">
+                    Please enter a valid full name (minimum 3 characters).
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="emailAddress" class="form-label">Email address</label>
+                <input 
+                    type="email" 
+                    class="form-control" 
+                    id="emailAddress" 
+                    placeholder="name@example.com" 
+                    required 
+                    />
+                <div class="invalid-feedback">
+                    Please enter a valid email address.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="password" 
+                    placeholder="Enter password" 
+                    required 
+                    minlength="6"
+                    />
+                <div class="invalid-feedback">
+                    Password must be at least 6 characters.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="confirmPassword" 
+                    placeholder="Confirm your password" 
+                    required 
+                    minlength="6"
+                    />
+                <div class="invalid-feedback" id="confirmPasswordFeedback">
+                    Please confirm your password correctly.
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="roleSelect" class="form-label">Select Role</label>
+                <select class="form-select" id="roleSelect" required>
+                    <option value="" disabled selected>Choose role</option>
+                    <option value="admin">Admin</option>
+                    <option value="team_member">Team Member</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a role.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-register w-100">Register</button>
+        </form>
+        <p class="footer-text">Already have an account? <a href="{% url 'admin_login_page'%}">Log in here</a></p>
+    </main>
+
+    <script>
+        // Bootstrap form validation and custom password confirmation check
+        (() => {
+            'use strict';
+            const form = document.getElementById('registerForm');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const confirmPasswordFeedback = document.getElementById('confirmPasswordFeedback');
+
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Custom validation for password match
+                if(password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Passwords do not match");
+                    confirmPasswordFeedback.textContent = "Passwords do not match.";
+                } else {
+                    confirmPassword.setCustomValidity("");
+                    confirmPasswordFeedback.textContent = "Please confirm your password correctly.";
+                }
+
+                if(form.checkValidity()) {
+                    // Simulate registration success and redirect to login after 1.5s
+                    alert('User registered successfully. Redirecting to login...');
+                    setTimeout(() => {
+                        window.location.href = '{% url "admin_login_page" %}';
+                    }, 1500);
+                } else {
+                    form.classList.add('was-validated');
+                }
+            }, false);
+        })();
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

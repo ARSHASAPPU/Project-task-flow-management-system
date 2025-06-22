@@ -1,0 +1,192 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f7f9fc;
+    color: #222;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: #1f2937;
+    color: #fff;
+    padding: 12px 24px;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg, #6b21a8, #0891b2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    user-select: none;
+  }
+
+  /* Overrides for Bootstrap form controls */
+  select.form-select {
+    font-weight: 600;
+    min-width: 160px;
+  }
+
+  /* Priority labels */
+  .priority-label {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.875rem;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .priority-high {
+    background: #ef4444; /* red */
+  }
+  .priority-medium {
+    background: #f59e0b; /* amber */
+  }
+  .priority-low {
+    background: #10b981; /* green */
+  }
+
+  .deadline {
+    font-variant-numeric: tabular-nums;
+    color: #6b7280;
+  }
+
+  /* Custom progress bar container */
+  .progress-container {
+    margin: 40px 0 16px;
+  }
+
+  .progress-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* Custom progress bar fill with gradient */
+  .progress-bar-custom {
+    background: #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 20px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #6b21a8, #0891b2);
+    width: 0;
+    transition: width 0.7s ease;
+  }
+
+  .progress-text {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 600;
+  }
+
+  /* Custom btn styles to match app look */
+  .btn-update {
+    background: linear-gradient(135deg, #6b21a8, #0891b2);
+    color: white;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    transition: background 0.3s ease;
+  }
+  .btn-update:hover,
+  .btn-update:focus {
+    background: linear-gradient(135deg, #4c1d95, #04768a);
+  }
+
+  /* Table style override for spacing and shadows */
+  table {
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+  }
+  tbody tr {
+    background: white;
+    box-shadow: 0 8px 16px rgb(0 0 0 / 0.05);
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
+  tbody tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgb(107 33 168 / 0.3);
+  }
+  tbody tr td:first-child {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+  }
+
+  /* Responsive tweaks for smaller devices */
+  @media (max-width: 767.98px) {
+    .filters {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .filters label {
+      margin-right: 0;
+    }
+    .priority-label {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+    }
+    .btn-update {
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+    }
+    .logo {
+      font-size: 1.25rem;
+    }
+    table thead {
+      display: none;
+    }
+    table, tbody, tr, td {
+      display: block;
+      width: 100%;
+    }
+    tbody tr {
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    tbody tr td {
+      padding: 8px 0;
+      text-align: right;
+      position: relative;
+      padding-left: 50%;
+      border-bottom: 1px solid #eee;
+    }
+    tbody tr td:last-child {
+      border-bottom: none;
+    }
+    tbody tr td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 1rem;
+      width: 45%;
+      padding-left: 0.5rem;
+      font-weight: 700;
+      text-align: left;
+      color: #555;
+    }
+    .btn-update {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }

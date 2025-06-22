@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow | Modern Task Management</title>
+    <link rel="stylesheet" href="{% static 'CSS/landing.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+{% include 'nav.html'%}
+<body>
+    <!-- Hero Section (Initially visible) -->
+    <section id="heroSection" class="hero">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Organize Your Work With TaskFlow</h1>
+            <p class="hero-subtitle">
+                The ultimate task management system designed for teams and individuals. 
+                Streamline your workflow, boost productivity, and achieve more with our 
+                intuitive platform.
+            </p>
+            <button id="ctaButton" class="cta-button">Get Started</button>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Task Tracking</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <span>Team Collaboration</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress Analytics</span>
+                </div>
+            </div>
+        </div>
+        
+        <img src="{% static 'images/todo.avif'%}" alt="Task Management Illustration" class="hero-image">
+    </section>
+
+    <!-- Role Selection Section (Initially hidden) -->
+    <section id="roleSelection" class="role-selection">
+        <div class="container">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Select Your Role</h2>
+                    <p class="text-gray-600">Choose how you'll be using our system</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-center gap-8">
+                    <!-- User Card -->
+                    <div class="card-hover transition-all bg-white rounded-lg shadow-lg overflow-hidden w-full md:w-1/2 lg:w-1/3 p-6 border border-gray-200 hover:border-indigo-300">
+                        <div class="text-center">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Team Member</h3>
+                            <p class="text-gray-600 mb-6">View and update your assigned tasks, track progress, and collaborate with your team.</p>
+                            <button id="userBtn" class="btn-primary w-full py-3 px-6 rounded-md text-white font-medium">
+                                Continue as User
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Card -->
+                    <div class="card-hover transition-all bg-white rounded-lg shadow-lg overflow-hidden w-full md:w-1/2 lg:w-1/3 p-6 border border-gray-200 hover:border-indigo-300">
+                        <div class="text-center">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Admin</h3>
+                            <p class="text-gray-600 mb-6">Manage projects, assign tasks, monitor progress, and oversee your entire team's workflow.</p>
+                            <button id="adminBtn" class="btn-primary w-full py-3 px-6 rounded-md text-white font-medium">
+                                Continue as Admin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Section (Hidden by default) -->
+    <div id="adminSection" class="hidden container">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden p-8 mb-12 max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Access</h2>
+                <p class="text-gray-600">Choose your preferred access method</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Premium Packages -->
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Premium Packages</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-all">
+                            <h4 class="font-medium text-gray-800">Enterprise Plan</h4>
+                            <p class="text-2xl font-bold text-indigo-600">$299/month </p>
+                            <ul class="mt-2 text-sm text-gray-600 space-y-1">
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Unlimited projects</li>
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Advanced analytics</li>
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Priority support</li>
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Custom branding</li>
+                            </ul>
+                            <button class="btn-primary w-full mt-4 py-2 px-4 rounded-md text-white font-medium">
+                                Purchase
+                            </button>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-all">
+                            <h4 class="font-medium text-gray-800">Professional Plan</h4>
+                            <p class="text-2xl font-bold text-indigo-600">$199/month</p>
+                            <ul class="mt-2 text-sm text-gray-600 space-y-1">
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Up to 20 projects</li>
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Basic analytics</li>
+                                <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Email support</li>
+                            </ul>
+                            <button class="btn-primary w-full mt-4 py-2 px-4 rounded-md text-white font-medium">
+                                Purchase
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Free Registration -->
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Free Access</h3>
+                    <p class="text-gray-600 mb-6">Try our system with basic features for small teams</p>
+                    <button id="freeRegisterBtn" class="btn-primary w-full py-3 px-6 rounded-md text-white font-medium">
+                        Register for Free
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Login Modal -->
+    <div id="userLoginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">User  Login</h3>
+                <button class="close-btn" id="closeUser LoginModal">&times;</button>
+            </div>
+            <form id="userLoginForm" class="space-y-4">
+                <div>
+                    <label for="userEmail" class="block text-sm font-medium text-gray-700">Email / Username</label>
+                    <input type="text" id="userEmail" name="userEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="userPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="userPassword" name="userPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <button type="submit" class="w-full mt-4 py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Admin Login</h3>
+                <button class="close-btn" id="closeAdminLoginModal">&times;</button>
+            </div>
+            <form id="adminLoginForm" class="space-y-4">
+                <div>
+                    <label for="adminEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="adminEmail" name="adminEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="adminPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="adminPassword" name="adminPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <button type="submit" class="w-full mt-4 py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
+                    Sign In
+                </button>
+                
+                <div class="mt-4 text-center text-sm">
+                    Don't have an account? 
+                    <button type="button" id="showAdminRegisterModal" class="text-indigo-600 hover:text-indigo-500 font-medium">Register here</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create Account</h3>
+                <button class="close-btn" id="closeRegisterModal">&times;</button>
+            </div>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                    <select id="role" name="role" class="w-full px-3 py-2 border border-gray-300 rounded-md mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="Team Member">Team Member</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="w-full mt-4 py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
+                    Register
+                </button>
+                
+                <div class="mt-4 text-center text-sm">
+                    Already have an account? 
+                    <button type="button" id="showLoginModalFromRegister" class="text-indigo-600 hover:text-indigo-500 font-medium">Sign In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function showModal(modalId) {
+                document.getElementById(modalId).style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+            
+            function hideModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+                document.body.style.overflow = 'auto'; // Allow scrolling again
+            }
+            
+            document.getElementById('ctaButton').addEventListener('click', function() {
+                document.getElementById('heroSection').style.display = 'none';
+                document.getElementById('roleSelection').style.display = 'flex';
+                window.scrollTo(0, 0);
+            });
+            
+            document.getElementById('userBtn').addEventListener('click', function() {
+                showModal('userLoginModal');
+            });
+            
+            document.getElementById('adminBtn').addEventListener('click', function() {
+                document.getElementById('adminSection').style.display = 'block'; // Show premium details
+                document.getElementById('roleSelection').style.display = 'none'; // Hide role selection
+            });
+            
+            document.getElementById('freeRegisterBtn').addEventListener('click', function() {
+                showModal('registerModal'); // Show registration modal
+            });
+            
+            // Close buttons for modals
+            document.getElementById('closeUser LoginModal').addEventListener('click', function() {
+                hideModal('userLoginModal');
+            });
+            
+            document.getElementById('closeAdminLoginModal').addEventListener('click', function() {
+                hideModal('adminLoginModal');
+            });
+            
+            document.getElementById('closeRegisterModal').addEventListener('click', function() {
+                hideModal('registerModal');
+            });
+            
+            document.getElementById('showAdminRegisterModal').addEventListener('click', function() {
+                hideModal('adminLoginModal');
+                showModal('registerModal');
+            });
+            
+            document.getElementById('showLoginModalFromRegister').addEventListener('click', function() {
+                hideModal('registerModal');
+                showModal('adminLoginModal');
+            });
+            
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        hideModal(modal.id);
+                    }
+                });
+            });
+            
+            document.getElementById('userLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('User  login functionality would be implemented here');
+                hideModal('userLoginModal');
+            });
+            
+            document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Admin login functionality would be implemented here');
+                hideModal('adminLoginModal');
+            });
+            
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Registration functionality would be implemented here');
+                hideModal('registerModal');
+            });
+        });
+        
+    </script>
+</body>
+{% include 'footer.html'%}
+</html>

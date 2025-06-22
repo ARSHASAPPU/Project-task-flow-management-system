@@ -1,0 +1,54 @@
+
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981; /* Added secondary color for gradient */
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        nav {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-title {
+            color: var(--light);
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 1rem 2rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-icons {
+            margin-top: 0.5rem;
+        }
+
+        .social-icon {
+            color: var(--light);
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icon:hover {
+            color: #f3f4f6; /* Lighten on hover */
+        }
+   

@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - Project Task Management</title>
+  <link rel="stylesheet" href="{% static 'CSS/ad_dashboard.css' %}" />
+  <style>
+    .success-modal {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background:white;
+      color:rgb(30, 173, 70);
+      padding: 4rem 8rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .success-modal.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .success-modal .checkmark {
+      font-size: 3rem;
+      color:rgb(25, 221, 80);
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header role="banner">
+    <div class="logo" aria-label="Project Task Management Logo" tabindex="0">ProjTask</div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </button>
+    <nav role="navigation" aria-label="Main navigation">
+      <ul>
+        <li><a href="{% url 'admin_dashboard'%}" aria-current="page">Dashboard</a></li>
+        <li><a href="{% url 'admin_project_page'%}">Projects</a></li>
+        <li><a href="{% url 'admin_task_page'%}">Tasks</a></li>
+        <li><a href="{% url 'admin_user_manage_page'%}">User  Management</a></li>
+        {% comment %} <li><a href="#">Activity Log</a></li> {% endcomment %}
+        <li><a href="{% url 'admin_profile_page'%}">Profile</a></li>
+      </ul>
+    </nav>
+    <div class="profile-menu" tabindex="0">
+      <button class="profile-button" aria-haspopup="true" aria-expanded="false" aria-controls="profile-menu">
+        Admin <span class="profile-arrow"></span>
+      </button>
+      <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
+        <a href="{% url 'admin_profile_page'%}"role="menuitem" tabindex="-1">Profile</a>
+        <a href="{% url 'home_page'%}" role="menuitem" tabindex="-1">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="0">
+    <h1 class="page-title">Dashboard Overview</h1>
+
+    <section aria-label="Overview metrics" class="overview-cards">
+      <div class="card" role="article" tabindex="0">
+        <h3>Total Projects</h3>
+        <p class="number" id="total-projects">12</p>
+      </div>
+      <div class="card" role="article" tabindex="0">
+        <h3>Total Tasks</h3>
+        <p class="number" id="total-tasks">78</p>
+      </div>
+      <div class="card" role="article" tabindex="0">
+        <h3>Tasks Due Today</h3>
+        <p class="number" id="tasks-due-today">8</p>
+      </div>
+      <div class="card" role="article" tabindex="0">
+        <h3>Unread Notifications</h3>
+        <p class="number" id="notifications-count">3</p>
+      </div>
+    </section>
+
+    <section aria-label="Projects management">
+      <h2>Projects</h2>
+      <button class="button" onclick="alert('Add new project form will appear.')">Add New Project</button>
+      <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Website Redesign</div>
+          <div class="item-card-description">Revamp the landing page and improve UX.</div>
+          <div class="item-card-meta">
+            Start: 2023-06-01 | End: 2023-06-30 | Assigned members: 5
+          </div>
+          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit project details')">View</button>
+        </article>
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Mobile App Launch</div>
+          <div class="item-card-description">Develop and launch the iOS and Android app.</div>
+          <div class="item-card-meta">
+            Start: 2023-07-01 | End: 2023-08-15 | Assigned members: 8
+          </div>
+          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit project details')">View</button>
+        </article>
+      </div>
+    </section>
+
+    <section aria-label="Tasks management">
+      <h2>Tasks</h2>
+      <button class="button" onclick="alert('Add new task form will appear.')">Add New Task</button>
+      <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Implement authentication</div>
+          <div class="item-card-description">Create secure login and registration pages.</div>
+          <div class="item-card-meta">
+            Deadline: 2023-06-05 | Priority: High | Status: In Progress
+          </div>
+          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit task details')">View</button>
+        </article>
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Database schema design</div>
+          <div class="item-card-description">Design the database for users, projects, and tasks.</div>
+          <div class="item-card-meta">
+            Deadline: 2023-06-10 | Priority: Medium | Status: Pending
+          </div>
+          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit task details')">View</button>
+        </article>
+      </div>
+    </section>
+
+    <section aria-label="User  management">
+      <h2>User Management</h2>
+      <button class="button" onclick="alert('Add new user form will appear.')">Add New User</button>
+      <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Alice Johnson</div>
+          <div class="item-card-description">Role: Team Member | Joined: 2023-05-10</div>
+          <button class="button danger" style="margin-top: 0.5rem;" onclick="alert('Delete user Alice')">Delete</button>
+        </article>
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">David Smith</div>
+          <div class="item-card-description">Role: Admin | Joined: 2023-04-21</div>
+          <button class="button danger" style="margin-top: 0.5rem;" onclick="alert('Delete user David')">Delete</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2023 Project Task Management System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ✅ Success Modal -->
+  <div id="successModal" class="success-modal">
+    <div class="checkmark">✅</div>
+    <div>Logged in successfully</div>
+  </div>
+
+  <script>
+    // Show success modal on page load
+    window.addEventListener('load', () => {
+      const modal = document.getElementById('successModal');
+      modal.classList.add('show');
+      setTimeout(() => {
+        modal.classList.remove('show');
+      }, 2500); // fade out after 2.5 seconds
+    });
+
+    // Profile dropdown toggling
+    const profileButton = document.querySelector('.profile-button');
+    const dropdownMenu = document.getElementById('profile-menu');
+
+    profileButton.addEventListener('click', () => {
+      const expanded = profileButton.getAttribute('aria-expanded') === 'true' || false;
+      profileButton.setAttribute('aria-expanded', !expanded);
+      dropdownMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.remove('show');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('nav ul');
+
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true' || false;
+      navToggle.setAttribute('aria-expanded', !expanded);
+      navMenu.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>

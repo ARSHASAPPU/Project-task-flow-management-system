@@ -1,0 +1,60 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Select Your Role</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'CSS/role.css'%}">
+  
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  {% include 'nav.html' %}
+
+  <main class="flex items-center justify-center min-h-[calc(100vh-160px)] p-6">
+    <section class="role-selection w-full max-w-5xl">
+      <div class="bg-white rounded-xl shadow-md overflow-hidden p-8">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Select Your Role</h2>
+          <p class="text-gray-600">Choose how you'll be using our system</p>
+        </div>
+        <div class="flex flex-col md:flex-row justify-center gap-8">
+          <!-- Team Member Card -->
+          <div class="card-hover transition-all bg-white rounded-lg shadow-lg overflow-hidden w-full md:w-1/2 lg:w-1/3 p-6 border border-gray-200 hover:border-indigo-300">
+            <div class="text-center">
+              <div class="feature-icon mx-auto">
+                <i class="fas fa-user"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Team Member</h3>
+              <p class="text-gray-600 mb-6">View and update your assigned tasks, track progress, and collaborate with your team.</p>
+              <a href="{% url 'user_login' %}" class="btn-primary w-full py-3 px-6 rounded-md text-white font-medium">
+  Continue as Team Member
+</a>
+
+            </div>
+          </div>
+          <!-- Admin Card -->
+          <div class="card-hover transition-all bg-white rounded-lg shadow-lg overflow-hidden w-full md:w-1/2 lg:w-1/3 p-6 border border-gray-200 hover:border-indigo-300">
+            <div class="text-center">
+              <div class="feature-icon mx-auto">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Admin</h3>
+              <p class="text-gray-600 mb-6">Manage projects, assign tasks, monitor progress, and oversee your entire team's workflow.</p>
+              <a href="{% url 'admin_access_page' %}" class="btn-primary w-full py-3 px-6 rounded-md text-white font-medium text-center d-block">
+    Continue as Admin
+</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include 'footer.html' %}
+</body>
+</html>

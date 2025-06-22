@@ -1,0 +1,55 @@
+
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --dark: #1e293b;
+      --light: #f8fafc;
+    }
+
+    body {
+      background-color: var(--light);
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary-custom:hover {
+      background: linear-gradient(135deg, #5a6fd1 0%, #6a3d9a 100%);
+    }
+
+    .admin-box {
+      animation: fadeInUp 0.4s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .plan-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      transition: 0.3s ease;
+    }
+
+    .plan-box:hover {
+      border-color: #6366f1;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .check-icon {
+      color: #10b981;
+      margin-right: 8px;
+    }

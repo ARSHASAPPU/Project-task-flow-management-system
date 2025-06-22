@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Dashboard - Project Task Management</title>
+  <link rel="stylesheet" href="{% static 'CSS/user_dashboard.css' %}" />
+</head>
+
+<body>
+  <header role="banner">
+    <div class="logo" aria-label="Project Task Management Logo" tabindex="0">ProjTask</div>
+    <nav role="navigation" aria-label="Main navigation">
+      <ul>
+        <li><a href="{% url 'user_dashboard'%}" aria-current="page">Dashboard</a></li>
+        <li><a href="{% url 'user_task_page'%}">Assigned Tasks</a></li>
+        <li><a href="{% url 'user_notify_page'%}">Notifications</a></li>
+        <li><a href="{% url 'user_profile_page'%}">Profile</a></li>
+      </ul>
+    </nav>
+    <div class="profile-menu" tabindex="0">
+      <button class="profile-button" aria-haspopup="true" aria-expanded="false" aria-controls="profile-menu">
+        User <span class="profile-arrow"></span>
+      </button>
+      <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
+        <a href="{% url 'user_profile_page'%}" role="menuitem" tabindex="-1">Profile</a>
+        <a href="{% url 'home_page'%}" role="menuitem" tabindex="-1">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="0">
+    <h1 class="page-title">User  Dashboard</h1>
+
+    <!-- Overview Section -->
+    <section aria-label="Dashboard Overview">
+      <h2>Overview</h2>
+      <div class="overview-cards">
+        <div class="card" role="article" tabindex="0">
+          <h3>Total Projects</h3>
+          <p class="number" id="total-projects">5</p>
+        </div>
+        <div class="card" role="article" tabindex="0">
+          <h3>Total Tasks Assigned</h3>
+          <p class="number" id="total-tasks">15</p>
+        </div>
+        <div class="card" role="article" tabindex="0">
+          <h3>Tasks Due Today</h3>
+          <p class="number" id="tasks-due-today">2</p>
+        </div>
+        <div class="card" role="article" tabindex="0">
+          <h3>Unread Notifications</h3>
+          <p class="number" id="notifications-count">4</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assigned Tasks Section -->
+    <section aria-label="Assigned Tasks">
+      <h2>Assigned Tasks</h2>
+      <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Design Homepage</div>
+          <div class="item-card-description">Create a new design for the homepage.</div>
+          <div class="item-card-meta">
+            Deadline: 2023-09-15 | Priority: High | Status: In Progress
+          </div>
+          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Update task status')">Update Status</button>
+        </article>
+        <article class="item-card" tabindex="0">
+          <div class="item-card-header">Write Documentation</div>
+          <div class="item-card-description">Document the new features added to the project.</div>
+          <div class="item-card-meta">
+            Deadline: 2023-09-20 | Priority: Medium | Status: Pending
+          </div>
+          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Update task status')">Update Status</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- Notifications Section -->
+    <section aria-label="Notifications">
+      <h2>Notifications</h2>
+      <div class="notification-list">
+        <div class="notification-item">Task "Design Homepage" is due today.</div>
+        <div class="notification-item">New comment on your task "Write Documentation".</div>
+        <div class="notification-item">Project "Website Redesign" has been updated.</div>
+        <div class="notification-item">You have been assigned a new task.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2023 Project Task Management System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Profile dropdown toggling
+    const profileButton = document.querySelector('.profile-button');
+    const dropdownMenu = document.getElementById('profile-menu');
+
+    profileButton.addEventListener('click', () => {
+      const expanded = profileButton.getAttribute('aria-expanded') === 'true' || false;
+      profileButton.setAttribute('aria-expanded', !expanded);
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (event) => {
+      if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.remove('show');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+</body>
+</html>
