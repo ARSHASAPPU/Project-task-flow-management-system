@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>User Dashboard - Project Task Management</title>
   <link rel="stylesheet" href="{% static 'CSS/user_dashboard.css' %}" />
+ 
 </head>
-
 <body>
   <header role="banner">
     <div class="logo" aria-label="Project Task Management Logo" tabindex="0">ProjTask</div>
@@ -33,7 +33,6 @@
   <main class="container" role="main" tabindex="0">
     <h1 class="page-title">User  Dashboard</h1>
 
-    <!-- Overview Section -->
     <section aria-label="Dashboard Overview">
       <h2>Overview</h2>
       <div class="overview-cards">
@@ -56,7 +55,6 @@
       </div>
     </section>
 
-    <!-- Assigned Tasks Section -->
     <section aria-label="Assigned Tasks">
       <h2>Assigned Tasks</h2>
       <div class="card-list" aria-live="polite" aria-relevant="additions removals">
@@ -79,7 +77,6 @@
       </div>
     </section>
 
-    <!-- Notifications Section -->
     <section aria-label="Notifications">
       <h2>Notifications</h2>
       <div class="notification-list">
@@ -97,7 +94,30 @@
     </div>
   </footer>
 
+  <!-- ✅ Success Modal -->
+  <div id="successModal" class="success-modal">
+    <div class="checkmark">✅</div>
+    <div>Logged in successfully</div>
+  </div>
+
   <script>
+    // Show success modal on page load
+    {% comment %} window.addEventListener('load', () => {
+      const modal = document.getElementById('successModal');
+      if (modal) {
+        modal.classList.add('show');
+        setTimeout(() => {
+          modal.classList.remove('show');
+        }, 2500);
+      }
+    }); {% endcomment %}
+  window.addEventListener('load', () => {
+      const modal = document.getElementById('successModal');
+      modal.classList.add('show');
+      setTimeout(() => {
+        modal.classList.remove('show');
+      }, 2500); // fade out after 2.5 seconds
+    });
     // Profile dropdown toggling
     const profileButton = document.querySelector('.profile-button');
     const dropdownMenu = document.getElementById('profile-menu');
@@ -108,7 +128,6 @@
       dropdownMenu.classList.toggle('show');
     });
 
-    // Close dropdown on outside click
     document.addEventListener('click', (event) => {
       if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
         dropdownMenu.classList.remove('show');
