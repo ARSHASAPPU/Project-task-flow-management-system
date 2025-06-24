@@ -13,14 +13,14 @@
   <div class="container my-4">
     <h2 class="text-center mb-4 text-purple">Task Management</h2>
 
-    <!-- Add Task Button trigger modal -->
-    <div class="text-right mb-3">
+    <!-- Add Task Button -->
+    <div class="text-end mb-3">
       <button type="button" class="btn btn-gradient" data-bs-toggle="modal" data-bs-target="#addTaskModal">
         Add Task
       </button>
     </div>
 
-    <!-- Task List Table -->
+    <!-- Task Table -->
     <div class="card bg-secondary rounded-4 shadow-lg">
       <div class="card-header">
         <h5>Task List</h5>
@@ -40,13 +40,14 @@
               </tr>
             </thead>
             <tbody>
+              {% for task in tasks %}
               <tr>
-                <td>Design UI Mockups</td>
-                <td>Member 1</td>
-                <td>Project Alpha</td>
-                <td><span class="badge bg-warning">In Progress</span></td>
-                <td><span class="badge bg-danger">High</span></td>
-                <td>2023-05-15</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.assigned_to.full_name }}</td>
+                <td>{{ task.project.name }}</td>
+                <td><span class="badge bg-warning">{{ task.status }}</span></td>
+                <td><span class="badge bg-danger">{{ task.priority }}</span></td>
+                <td>{{ task.deadline }}</td>
                 <td>
                   <button class="btn btn-icon btn-icon-edit me-2" title="Edit Task" aria-label="Edit Task">
                     <span class="material-icons">edit</span>
@@ -56,39 +57,9 @@
                   </button>
                 </td>
               </tr>
-              <tr>
-                <td>Backend API Development</td>
-                <td>Member 2</td>
-                <td>Project Beta</td>
-                <td><span class="badge bg-secondary">To Do</span></td>
-                <td><span class="badge bg-warning">Medium</span></td>
-                <td>2023-06-01</td>
-                <td>
-                  <button class="btn btn-icon btn-icon-edit me-2" title="Edit Task" aria-label="Edit Task">
-                    <span class="material-icons">edit</span>
-                  </button>
-                  <button class="btn btn-icon btn-icon-delete" title="Delete Task" aria-label="Delete Task">
-                    <span class="material-icons">delete</span>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Write Documentation</td>
-                <td>Member 3</td>
-                <td>Project Alpha</td>
-                <td><span class="badge bg-success">Completed</span></td>
-                <td><span class="badge bg-info">Low</span></td>
-                <td>2023-04-20</td>
-                <td>
-                  <button class="btn btn-icon btn-icon-edit me-2" title="Edit Task" aria-label="Edit Task">
-                    <span class="material-icons">edit</span>
-                  </button>
-                  <button class="btn btn-icon btn-icon-delete" title="Delete Task" aria-label="Delete Task">
-                    <span class="material-icons">delete</span>
-                  </button>
-                </td>
-              </tr>
-              <!-- Add more tasks as needed -->
+              {% empty %}
+              <tr><td colspan="7" class="text-center">No tasks found.</td></tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -100,7 +71,8 @@
   <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-secondary text-light rounded-4 shadow-lg border-0">
-        <form>
+        <form method="POST">
+          {% csrf_token %}
           <div class="modal-header border-0 pb-0">
             <h5 class="modal-title text-purple fw-bold" id="addTaskModalLabel">Add New Task</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -108,20 +80,20 @@
           <div class="modal-body">
             <div class="form-group mb-3">
               <label for="taskTitle" class="form-label fw-semibold">Task Title</label>
-              <input type="text" class="form-control form-control-dark" id="taskTitle" placeholder="Enter task title" required />
+              <input type="text" name="title" class="form-control form-control-dark" id="taskTitle" placeholder="Enter task title" required />
             </div>
             <div class="form-group mb-3">
               <label for="taskDescription" class="form-label fw-semibold">Description</label>
-              <textarea class="form-control form-control-dark" id="taskDescription" rows="3" placeholder="Enter task description" required></textarea>
+              <textarea name="description" class="form-control form-control-dark" id="taskDescription" rows="3" placeholder="Enter task description" required></textarea>
             </div>
             <div class="form-row mb-3">
               <div class="form-group col-md-6">
                 <label for="taskDeadline" class="form-label fw-semibold">Deadline</label>
-                <input type="date" class="form-control form-control-dark" id="taskDeadline" required />
+                <input type="date" name="deadline" class="form-control form-control-dark" id="taskDeadline" required />
               </div>
               <div class="form-group col-md-6">
                 <label for="taskPriority" class="form-label fw-semibold">Priority</label>
-                <select class="form-control form-select-dark" id="taskPriority" required>
+                <select name="priority" class="form-control form-select-dark" id="taskPriority" required>
                   <option value="" disabled selected>Select Priority</option>
                   <option value="High">High</option>
                   <option value="Medium">Medium</option>
@@ -132,7 +104,7 @@
             <div class="form-row mb-3">
               <div class="form-group col-md-6">
                 <label for="taskStatus" class="form-label fw-semibold">Status</label>
-                <select class="form-control form-select-dark" id="taskStatus" required>
+                <select name="status" class="form-control form-select-dark" id="taskStatus" required>
                   <option value="" disabled selected>Select Status</option>
                   <option value="To Do">To Do</option>
                   <option value="In Progress">In Progress</option>
@@ -141,22 +113,21 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="taskAssignedTo" class="form-label fw-semibold">Assign To</label>
-                <select class="form-control form-select-dark" id="taskAssignedTo" required>
+                <select name="assigned_to" class="form-control form-select-dark" id="taskAssignedTo" required>
                   <option value="" disabled selected>Select User</option>
-                  <option>Member 1</option>
-                  <option>Member 2</option>
-                  <option>Member 3</option>
-                  <option>Member 4</option>
+                  {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.full_name }}</option>
+                  {% endfor %}
                 </select>
               </div>
             </div>
             <div class="form-group mb-4">
               <label for="taskProject" class="form-label fw-semibold">Attach To Project</label>
-              <select class="form-control form-select-dark" id="taskProject" required>
+              <select name="project" class="form-control form-select-dark" id="taskProject" required>
                 <option value="" disabled selected>Select Project</option>
-                <option>Project Alpha</option>
-                <option>Project Beta</option>
-                <option>Project Gamma</option>
+                {% for project in projects %}
+                  <option value="{{ project.id }}">{{ project.name }}</option>
+                {% endfor %}
               </select>
             </div>
           </div>

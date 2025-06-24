@@ -112,4 +112,5 @@ body, html {
 /* Close button */
 .btn-close {
     filter: brightness(0) saturate(100%) invert(45%) sepia(20%) saturate(456%) hue-rotate(175deg) brightness(91%) contrast(89%);
+    
 }

@@ -8,15 +8,15 @@ def admin_dash(request):
     return render(request,'admin_dashboard.html')
 def admin_project(request):
     return render(request,'admin_project_page.html')
-def admin_task(request):
-    return render(request,'admin_task_page.html')
+# def admin_task(request):
+#     return render(request,'admin_task_page.html')
 
 def admin_profile(request):
     return render(request,'admin_profile.html')
 # def user_dash(request):
 #     return render(request,'user_dashboard.html')
-def user_task(request):
-    return render(request,'user_task_page.html')
+# def user_task(request):
+#     return render(request,'user_task_page.html')
 def user_profile(request):
     return render(request,'user_profile.html')
 def user_notify(request):
@@ -68,7 +68,7 @@ def admin_user_manage(request):
                 password=password,
                 role=role
             )
-            messages.success(request, 'User added successfully.')
+            # messages.success(request, 'User added successfully.')
 
         return redirect('admin_user_manage_page')
 
@@ -133,4 +133,137 @@ def user_dash(request):
         'user': user,
     }
     return render(request, 'user_dashboard.html', context)
+
+from .models import Project, User, Task  # include Task if not already added
+
+def admin_task(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        deadline = request.POST.get('deadline')
+        priority = request.POST.get('priority')
+        status = request.POST.get('status')
+        assigned_to_id = request.POST.get('assigned_to')
+        project_id = request.POST.get('project')
+
+        assigned_to = User.objects.get(id=assigned_to_id)
+        project = Project.objects.get(id=project_id)
+
+        Task.objects.create(
+            title=title,
+            description=description,
+            deadline=deadline,
+            priority=priority,
+            status=status,
+            assigned_to=assigned_to,
+            project=project
+        )
+
+        return redirect('admin_task_page')
+
+    users = User.objects.filter(role='Team Member')
+    projects = Project.objects.all()
+    tasks = Task.objects.select_related('assigned_to', 'project')
+    return render(request, 'admin_task_page.html', {
+        'users': users,
+        'projects': projects,
+        'tasks': tasks
+    })
+
+from django.shortcuts import render, redirect
+from .models import Project, User
+from django.contrib import messages
+
+def admin_project(request):
+    if request.method == 'POST':
+        name = request.POST.get('projectTitle')
+        description = request.POST.get('projectDescription')
+        start_date = request.POST.get('startDate')
+        end_date = request.POST.get('endDate')
+        member_ids = request.POST.getlist('teamMembers')  # List of user IDs (must match option values)
+
+        if not (name and description and start_date and end_date and member_ids):
+            messages.error(request, "All fields are required.")
+            return redirect('admin_project_page')
+
+        project = Project.objects.create(
+            name=name,
+            description=description,
+            start_date=start_date,
+            end_date=end_date,
+        )
+        project.team_members.set(member_ids)
+        messages.success(request, "Project added successfully.")
+        return redirect('admin_project_page')
+
+    users = User.objects.filter(role='Team Member')
+    projects = Project.objects.all()
+
+    return render(request, 'admin_project_page.html', {
+        'users': users,
+        'projects': projects
+    })
+
+from django.shortcuts import render, redirect
+from .models import Task, Project, User
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+
+def user_tasks(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "You must be logged in to view tasks.")
+        return redirect('user_login')
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect('user_login')
+
+    selected_project = request.GET.get('project')
+    selected_priority = request.GET.get('priority')
+
+    tasks = Task.objects.filter(assigned_to=user)
+
+    if selected_project and selected_project.isdigit():
+        tasks = tasks.filter(project__id=int(selected_project))
+
+    if selected_priority:
+        tasks = tasks.filter(priority__iexact=selected_priority)
+
+    total_tasks = tasks.count()
+    completed_tasks = tasks.filter(status='Completed').count()
+    progress = int((completed_tasks / total_tasks) * 100) if total_tasks else 0
+
+    context = {
+        'tasks': tasks,
+        'projects': Project.objects.all(),
+        'progress': progress,
+        'completed_tasks': completed_tasks,
+        'total_tasks': total_tasks,
+        'selected_project': selected_project,
+        'selected_priority': selected_priority,
+    }
+    return render(request, 'user_task_page.html', context)
+
+
+def update_task_status(request, task_id):
+    if request.method == 'POST':
+        user_id = request.session.get('user_id')
+        if not user_id:
+            messages.error(request, "You must be logged in.")
+            return redirect('user_login')
+
+        new_status = request.POST.get('status')
+        try:
+            user = User.objects.get(id=user_id)
+            task = Task.objects.get(id=task_id, assigned_to=user)
+            task.status = new_status
+            task.save()
+            messages.success(request, "Task status updated.")
+        except (User.DoesNotExist, Task.DoesNotExist):
+            messages.error(request, "Failed to update task.")
+    
+    return redirect('user_task_page')
 
