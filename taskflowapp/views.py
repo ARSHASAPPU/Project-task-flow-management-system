@@ -50,28 +50,7 @@ def admin_login(request):
 
     return render(request, 'admin_login.html')  # Your template name here
 
-# def user_login(request):
-#     if request.method == 'POST':
-#         email_or_username = request.POST.get('email_or_username')
-#         password = request.POST.get('password')
 
-#         try:
-#             user = User.objects.get(email=email_or_username, password=password)
-
-#             # Store user session if needed
-#             request.session['user_id'] = user.id
-#             request.session['user_role'] = user.role
-
-#             if user.role == 'Admin':
-#                 return redirect('admin_dashboard')
-#             elif user.role == 'Team Member':
-#                 return redirect('user_dashboard')
-
-#         except User.DoesNotExist:
-#             messages.error(request, "Invalid email or password.")
-#             return redirect('user_login')
-
-#     return render(request, 'user_login.html')
 
 def admin_user_manage(request):
     if request.method == 'POST':
@@ -117,9 +96,9 @@ def user_login(request):
             request.session['user_id'] = user.id
             request.session['user_role'] = user.role
 
-            if user.role == 'Admin':
-                return redirect('admin_dashboard')
-            elif user.role.lower() == 'team member':
+            # if user.role == 'Admin':
+            #     return redirect('admin_dashboard')
+            if user.role.lower() == 'team member':
                 return redirect('user_dashboard')
             else:
                 messages.error(request, "Invalid role.")
@@ -154,3 +133,4 @@ def user_dash(request):
         'user': user,
     }
     return render(request, 'user_dashboard.html', context)
+
