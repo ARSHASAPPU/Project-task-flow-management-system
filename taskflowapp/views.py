@@ -19,8 +19,8 @@ def admin_profile(request):
 #     return render(request,'user_task_page.html')
 def user_profile(request):
     return render(request,'user_profile.html')
-def user_notify(request):
-    return render(request,'user_notification_page.html')
+# def user_notify(request):
+#     return render(request,'user_notification_page.html')
 def landing(request):
     return render(request,'landing_page.html')
 def home(request):
@@ -136,6 +136,42 @@ def user_dash(request):
 
 from .models import Project, User, Task  # include Task if not already added
 
+# def admin_task(request):
+#     if request.method == 'POST':
+#         title = request.POST.get('title')
+#         description = request.POST.get('description')
+#         deadline = request.POST.get('deadline')
+#         priority = request.POST.get('priority')
+#         status = request.POST.get('status')
+#         assigned_to_id = request.POST.get('assigned_to')
+#         project_id = request.POST.get('project')
+
+#         assigned_to = User.objects.get(id=assigned_to_id)
+#         project = Project.objects.get(id=project_id)
+
+#         Task.objects.create(
+#             title=title,
+#             description=description,
+#             deadline=deadline,
+#             priority=priority,
+#             status=status,
+#             assigned_to=assigned_to,
+#             project=project
+#         )
+
+#         return redirect('admin_task_page')
+
+#     users = User.objects.filter(role='Team Member')
+#     projects = Project.objects.all()
+#     tasks = Task.objects.select_related('assigned_to', 'project')
+#     return render(request, 'admin_task_page.html', {
+#         'users': users,
+#         'projects': projects,
+#         'tasks': tasks
+#     })
+from .models import Project, User, Task, Notification  # add Notification
+from django.utils import timezone
+
 def admin_task(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -149,7 +185,7 @@ def admin_task(request):
         assigned_to = User.objects.get(id=assigned_to_id)
         project = Project.objects.get(id=project_id)
 
-        Task.objects.create(
+        task = Task.objects.create(
             title=title,
             description=description,
             deadline=deadline,
@@ -157,6 +193,13 @@ def admin_task(request):
             status=status,
             assigned_to=assigned_to,
             project=project
+        )
+
+        # ✅ Create assignment notification
+        Notification.objects.create(
+            user=assigned_to,
+            message=f'Task "{title}" assigned to you.',
+            type='assignment'
         )
 
         return redirect('admin_task_page')
@@ -267,3 +310,49 @@ def update_task_status(request, task_id):
     
     return redirect('user_task_page')
 
+
+from .models import Notification
+
+def user_notify(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "You must be logged in to view notifications.")
+        return redirect('user_login')
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect('user_login')
+
+    notifications = Notification.objects.filter(user=user).order_by('-timestamp')
+
+    return render(request, 'user_notification_page.html', {
+        'notifications': notifications,
+        'user': user
+    })
+
+
+from django.http import JsonResponse
+from .models import Notification
+
+def mark_notification_read(request, notification_id):
+    try:
+        notification = Notification.objects.get(id=notification_id)
+        notification.is_read = True
+        notification.save()
+        return JsonResponse({'success': True})
+    except Notification.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Notification not found'}, status=404)
+
+
+from django.http import JsonResponse
+from .models import Notification
+
+def delete_notification(request, notification_id):
+    try:
+        notification = Notification.objects.get(id=notification_id)
+        notification.delete()
+        return JsonResponse({'success': True})
+    except Notification.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Notification not found'}, status=404)

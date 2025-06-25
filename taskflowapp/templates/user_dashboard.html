@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>User Dashboard - Project Task Management</title>
   <link rel="stylesheet" href="{% static 'CSS/user_dashboard.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
  
 </head>
 <body>
@@ -21,7 +22,8 @@
     </nav>
     <div class="profile-menu" tabindex="0">
       <button class="profile-button" aria-haspopup="true" aria-expanded="false" aria-controls="profile-menu">
-        User <span class="profile-arrow"></span>
+       Welcome {{ user.full_name }}<i class="fa-solid fa-user"></i>
+ <span class="profile-arrow"></span>
       </button>
       <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
         <a href="{% url 'user_profile_page'%}" role="menuitem" tabindex="-1">Profile</a>

@@ -87,3 +87,19 @@ class Task(models.Model):
         return self.title
 
 # models.py
+from django.db import models
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('assignment', 'Assignment'),
+        ('deadline', 'Deadline'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.full_name} - {self.type}"

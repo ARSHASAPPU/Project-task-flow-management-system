@@ -1,213 +1,101 @@
-{% load static%}
+{% load static %}
+{% load humanize %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>User Notifications - Project Task Management</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-<link rel="stylesheet" href={% static 'CSS/user_notification.css'%}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Notifications - Project Task Management</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'CSS/user_notification.css' %}" />
 </head>
+
 <body>
-<header>User Notifications</header>
-<main class="container">
-  <div class="filters-bar">
-    <select class="filter-select" id="filterType" aria-label="Filter notifications by type">
-      <option value="all">All Notifications</option>
-      <option value="assignment">Task Assignments</option>
-      <option value="deadline">Deadlines</option>
-    </select>
-    <select class="filter-select" id="sortOrder" aria-label="Sort notifications">
-      <option value="newest">Newest First</option>
-      <option value="oldest">Oldest First</option>
-    </select>
-  </div>
-  <section id="notificationsList" class="notifications-list" aria-live="polite" aria-relevant="additions">
-    <!-- Notification cards will appear here -->
-  </section>
-  <div id="noNotifications" class="no-notifications" hidden>No notifications found.</div>
-</main>
+  <header>User Notifications</header>
 
-<script>
-  // Sample notifications data
-  const notifications = [
-    {
-      id: 1,
-      type: 'assignment',
-      message: 'Task "Design Login Page" assigned to you.',
-      timestamp: new Date(Date.now() - 3600 * 1000 * 3), // 3 hours ago
-      isRead: false
-    },
-    {
-      id: 2,
-      type: 'deadline',
-      message: 'Deadline tomorrow for task "Complete API Integration".',
-      timestamp: new Date(Date.now() - 3600 * 1000 * 24), // 1 day ago
-      isRead: false
-    },
-    {
-      id: 3,
-      type: 'assignment',
-      message: 'Task "Write unit tests" assigned to you.',
-      timestamp: new Date(Date.now() - 3600 * 1000 * 30), // 30 hours ago
-      isRead: true
-    },
-    {
-      id: 4,
-      type: 'deadline',
-      message: 'Deadline today for "Prepare client demo".',
-      timestamp: new Date(Date.now() - 3600 * 1000 * 1), // 1 hour ago
-      isRead: false
-    }
-  ];
+  <main class="container">
+    <div class="filters-bar">
+      <select class="filter-select" id="filterType" aria-label="Filter notifications by type" onchange="filterNotifications()">
+        <option value="all">All Notifications</option>
+        <option value="assignment">Task Assignments</option>
+        <option value="deadline">Deadlines</option>
+      </select>
+      <select class="filter-select" id="sortOrder" aria-label="Sort notifications" onchange="sortNotifications()">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </div>
 
-  // Utility to format relative time
-  function timeAgo(date) {
-    const seconds = Math.floor((new Date() - date) / 1000);
-    const intervals = [
-      { label: 'year', seconds: 31536000 },
-      { label: 'month', seconds: 2592000 },
-      { label: 'day', seconds: 86400 },
-      { label: 'hour', seconds: 3600 },
-      { label: 'minute', seconds: 60 },
-      { label: 'second', seconds: 1 },
-    ];
-    for (const interval of intervals) {
-      const count = Math.floor(seconds / interval.seconds);
-      if (count >= 1) {
-        return count + ' ' + interval.label + (count > 1 ? 's' : '') + ' ago';
-      }
-    }
-    return 'just now';
-  }
+    <section id="notificationsList" class="notifications-list" aria-live="polite" aria-relevant="additions">
+      {% if notifications %}
+        {% for n in notifications %}
+          <article class="notification-card" tabindex="0" data-type="{{ n.type }}" data-time="{{ n.created_at.timestamp }}">
+            <div class="icon-container {% if n.type == 'assignment' %}icon-assignment{% elif n.type == 'deadline' %}icon-deadline{% endif %}">
+              {% if n.type == 'assignment' %}
+                assignment_ind
+              {% elif n.type == 'deadline' %}
+                event_busy
+              {% else %}
+                notifications
+              {% endif %}
+            </div>
 
-  // DOM elements
-  const notificationsList = document.getElementById('notificationsList');
-  const noNotificationsEl = document.getElementById('noNotifications');
-  const filterTypeEl = document.getElementById('filterType');
-  const sortOrderEl = document.getElementById('sortOrder');
+            <div class="message-container">
+              <p class="notification-message">{{ n.message }}</p>
+              <time class="notification-timestamp">{{ n.created_at|naturaltime }}</time>
+            </div>
 
-  function createNotificationCard(notification) {
-    const card = document.createElement('article');
-    card.className = 'notification-card';
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('aria-label', notification.message + ', ' + timeAgo(notification.timestamp));
+            <div class="actions">
+              <!-- Replace with actual form URLs if needed -->
+              <form method="post" action="{% url 'mark_notification_read' n.id %}">
+                {% csrf_token %}
+                <button type="submit" class="action-btn">
+                  {% if n.is_read %}Mark as Unread{% else %}Mark as Read{% endif %}
+                </button>
+              </form>
 
-    // Icon container
-    const iconCont = document.createElement('div');
-    iconCont.className = 'icon-container';
-    if(notification.type === 'assignment'){
-      iconCont.classList.add('icon-assignment');
-      iconCont.textContent = 'assignment_ind';
-    } else if(notification.type === 'deadline'){
-      iconCont.classList.add('icon-deadline');
-      iconCont.textContent = 'event_busy';
-    } else {
-      iconCont.textContent = 'notifications';
+              <form method="post" action="{% url 'delete_notification' n.id %}">
+                {% csrf_token %}
+                <button type="submit" class="action-btn">Delete</button>
+              </form>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <div id="noNotifications" class="no-notifications">No notifications found.</div>
+      {% endif %}
+    </section>
+  </main>
+
+  <script>
+    function filterNotifications() {
+      const typeFilter = document.getElementById("filterType").value;
+      document.querySelectorAll(".notification-card").forEach(card => {
+        const type = card.getAttribute("data-type");
+        card.style.display = (typeFilter === "all" || type === typeFilter) ? "flex" : "none";
+      });
     }
 
-    // Message container
-    const messageCont = document.createElement('div');
-    messageCont.className = 'message-container';
+    function sortNotifications() {
+      const sortOrder = document.getElementById("sortOrder").value;
+      const container = document.getElementById("notificationsList");
+      const cards = Array.from(container.querySelectorAll(".notification-card"));
 
-    const messageEl = document.createElement('p');
-    messageEl.className = 'notification-message';
-    messageEl.textContent = notification.message;
+      cards.sort((a, b) => {
+        const aTime = parseFloat(a.getAttribute("data-time"));
+        const bTime = parseFloat(b.getAttribute("data-time"));
+        return sortOrder === "newest" ? bTime - aTime : aTime - bTime;
+      });
 
-    const timeEl = document.createElement('time');
-    timeEl.className = 'notification-timestamp';
-    timeEl.dateTime = notification.timestamp.toISOString();
-    timeEl.textContent = timeAgo(notification.timestamp);
-
-    messageCont.appendChild(messageEl);
-    messageCont.appendChild(timeEl);
-
-    // Actions container
-    const actionsCont = document.createElement('div');
-    actionsCont.className = 'actions';
-
-    // Mark as read / unread button
-    const markReadBtn = document.createElement('button');
-    markReadBtn.className = 'action-btn';
-    markReadBtn.textContent = notification.isRead ? 'Mark as Unread' : 'Mark as Read';
-    markReadBtn.setAttribute('aria-pressed', notification.isRead.toString());
-    markReadBtn.addEventListener('click', () => {
-      notification.isRead = !notification.isRead;
-      markReadBtn.textContent = notification.isRead ? 'Mark as Unread' : 'Mark as Read';
-      markReadBtn.setAttribute('aria-pressed', notification.isRead.toString());
-      card.style.opacity = notification.isRead ? '0.6' : '1';
-    });
-
-    // Delete button
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'action-btn';
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.addEventListener('click', () => {
-      const index = notifications.findIndex(n => n.id === notification.id);
-      if(index !== -1){
-        notifications.splice(index, 1);
-        renderNotifications();
-      }
-    });
-
-    actionsCont.appendChild(markReadBtn);
-    actionsCont.appendChild(deleteBtn);
-
-    // Assemble card
-    card.appendChild(iconCont);
-    card.appendChild(messageCont);
-    card.appendChild(actionsCont);
-
-    // Adjust opacity if read
-    if(notification.isRead){
-      card.style.opacity = '0.6';
+      cards.forEach(card => container.appendChild(card));
     }
 
-    return card;
-  }
-
-  function renderNotifications() {
-    const filterType = filterTypeEl.value;
-    const sortOrder = sortOrderEl.value;
-
-    // Filter notifications
-    let filtered = notifications;
-    if(filterType !== 'all'){
-      filtered = notifications.filter(n => n.type === filterType);
-    }
-
-    // Sort notifications
-    filtered.sort((a,b) => {
-      if(sortOrder === 'newest'){
-        return b.timestamp - a.timestamp;
-      } else {
-        return a.timestamp - b.timestamp;
-      }
-    });
-
-    // Clear current list
-    notificationsList.innerHTML = '';
-
-    if(filtered.length === 0){
-      noNotificationsEl.hidden = false;
-      return;
-    }
-    noNotificationsEl.hidden = true;
-
-    // Render notification cards
-    filtered.forEach(n => {
-      const card = createNotificationCard(n);
-      notificationsList.appendChild(card);
-    });
-  }
-
-  filterTypeEl.addEventListener('change', renderNotifications);
-  sortOrderEl.addEventListener('change', renderNotifications);
-
-  // Initial render
-  renderNotifications();
-</script>
+    // Initial sort/filter
+    filterNotifications();
+    sortNotifications();
+  </script>
 </body>
 </html>
-

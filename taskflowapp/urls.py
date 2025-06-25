@@ -20,8 +20,8 @@ urlpatterns = [
     path('user_dash/',views.user_dash,name='user_dashboard'),
     path('user_task/',views.user_tasks,name='user_task_page'),
     path('user/update-task/<int:task_id>/', views.update_task_status, name='update_task'),
-
-     
+    path('notification/delete/<int:notification_id>/', views.delete_notification, name='delete_notification'), 
+     path('notification/read/<int:notification_id>/', views.mark_notification_read, name='mark_notification_read'),
     path('user_profile/',views.user_profile,name='user_profile_page'),
     path('user_notify/',views.user_notify,name='user_notify_page'),
     
