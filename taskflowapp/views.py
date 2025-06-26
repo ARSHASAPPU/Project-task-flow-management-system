@@ -8,19 +8,13 @@ def admin_dash(request):
     return render(request,'admin_dashboard.html')
 def admin_project(request):
     return render(request,'admin_project_page.html')
-# def admin_task(request):
-#     return render(request,'admin_task_page.html')
 
 def admin_profile(request):
     return render(request,'admin_profile.html')
-# def user_dash(request):
-#     return render(request,'user_dashboard.html')
-# def user_task(request):
-#     return render(request,'user_task_page.html')
+
 def user_profile(request):
     return render(request,'user_profile.html')
-# def user_notify(request):
-#     return render(request,'user_notification_page.html')
+
 def landing(request):
     return render(request,'landing_page.html')
 def home(request):
@@ -134,41 +128,7 @@ def user_dash(request):
     }
     return render(request, 'user_dashboard.html', context)
 
-from .models import Project, User, Task  # include Task if not already added
-
-# def admin_task(request):
-#     if request.method == 'POST':
-#         title = request.POST.get('title')
-#         description = request.POST.get('description')
-#         deadline = request.POST.get('deadline')
-#         priority = request.POST.get('priority')
-#         status = request.POST.get('status')
-#         assigned_to_id = request.POST.get('assigned_to')
-#         project_id = request.POST.get('project')
-
-#         assigned_to = User.objects.get(id=assigned_to_id)
-#         project = Project.objects.get(id=project_id)
-
-#         Task.objects.create(
-#             title=title,
-#             description=description,
-#             deadline=deadline,
-#             priority=priority,
-#             status=status,
-#             assigned_to=assigned_to,
-#             project=project
-#         )
-
-#         return redirect('admin_task_page')
-
-#     users = User.objects.filter(role='Team Member')
-#     projects = Project.objects.all()
-#     tasks = Task.objects.select_related('assigned_to', 'project')
-#     return render(request, 'admin_task_page.html', {
-#         'users': users,
-#         'projects': projects,
-#         'tasks': tasks
-#     })
+         
 from .models import Project, User, Task, Notification  # add Notification
 from django.utils import timezone
 
@@ -246,6 +206,8 @@ def admin_project(request):
         'users': users,
         'projects': projects
     })
+
+
 
 from django.shortcuts import render, redirect
 from .models import Task, Project, User
@@ -356,3 +318,39 @@ def delete_notification(request, notification_id):
         return JsonResponse({'success': True})
     except Notification.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Notification not found'}, status=404)
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import User
+
+def user_profile(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('user_login')
+
+    user = User.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        user.full_name = request.POST.get('fullname')
+        user.email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirmPassword')
+
+        if password and password == confirm_password:
+            user.password = password  # ⚠️ You should hash this
+        elif password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('user_profile_page')
+
+        if 'profile-image-upload' in request.FILES:
+            user.profile_picture = request.FILES['profile-image-upload']
+
+        user.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('user_profile_page')
+
+    return render(request, 'user_profile.html', {'user': user})
+
+
+

@@ -30,20 +30,18 @@ class AdminUser(models.Model):
     
 from django.db import models
 
-class User(models.Model):
-    ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Team Member', 'Team Member'),
-    ]
 
+
+class User(models.Model):
     full_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)  # For real use: hash this
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    joined_date = models.DateTimeField(auto_now_add=True)
+    password = models.CharField(max_length=128)
+    role = models.CharField(max_length=20)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)  # ✅ Add this
 
     def __str__(self):
         return self.full_name
+
 
 
 from django.db import models
@@ -103,3 +101,5 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.user.full_name} - {self.type}"
+
+
