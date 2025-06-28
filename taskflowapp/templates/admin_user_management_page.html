@@ -37,7 +37,6 @@
             <th class="text-purple">Name</th>
             <th class="text-purple">Email</th>
             <th class="text-purple text-uppercase">Role</th>
-            <th class="text-purple">Joined Date</th>
             <th class="text-purple">Actions</th>
           </tr>
         </thead>
@@ -48,9 +47,7 @@
             <td class="fw-semibold text-purple">{{ user.full_name }}</td>
             <td class="fst-italic text-white-50">{{ user.email }}</td>
             <td class="text-uppercase text-info fw-bold">{{ user.role }}</td>
-            <td class="text-muted small">{{ user.joined_date }}</td>
             <td class="text-center">
-              <!-- Edit/Delete buttons (implement separately) -->
               <button class="btn btn-icon btn-icon-edit me-2">
                 <span class="material-icons">edit</span>
               </button>

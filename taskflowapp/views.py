@@ -9,8 +9,7 @@ def admin_dash(request):
 def admin_project(request):
     return render(request,'admin_project_page.html')
 
-def admin_profile(request):
-    return render(request,'admin_profile.html')
+
 
 def user_profile(request):
     return render(request,'user_profile.html')
@@ -206,6 +205,41 @@ def admin_project(request):
         'users': users,
         'projects': projects
     })
+
+from django.shortcuts import get_object_or_404
+# DELETE Project
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    project.delete()
+    messages.success(request, "Project deleted successfully.")
+    return redirect('admin_project_page')
+
+def edit_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.method == 'POST':
+        name = request.POST.get('projectTitle')
+        description = request.POST.get('projectDescription')
+        start_date = request.POST.get('startDate')
+        end_date = request.POST.get('endDate')
+        member_ids = request.POST.getlist('teamMembers')
+
+        if name:
+            project.name = name
+        if description:
+            project.description = description
+        if start_date:
+            project.start_date = start_date
+        if end_date:
+            project.end_date = end_date
+        if member_ids:
+            project.team_members.set(member_ids)
+
+        project.save()
+        messages.success(request, "Project updated successfully.")
+        return redirect('admin_project_page')
+
+    return redirect('admin_project_page')
 
 
 

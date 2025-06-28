@@ -53,7 +53,7 @@
         <li><a href="{% url 'admin_task_page'%}">Tasks</a></li>
         <li><a href="{% url 'admin_user_manage_page'%}">User  Management</a></li>
         {% comment %} <li><a href="#">Activity Log</a></li> {% endcomment %}
-        <li><a href="{% url 'admin_profile_page'%}">Profile</a></li>
+        {% comment %} <li><a href="{% url 'admin_profile_page'%}">Profile</a></li> {% endcomment %}
       </ul>
     </nav>
     <div class="profile-menu" tabindex="0">
@@ -61,7 +61,7 @@
         Admin <span class="profile-arrow"></span>
       </button>
       <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
-        <a href="{% url 'admin_profile_page'%}"role="menuitem" tabindex="-1">Profile</a>
+        {% comment %} <a href="{% url 'admin_profile_page'%}"role="menuitem" tabindex="-1">Profile</a> {% endcomment %}
         <a href="{% url 'home_page'%}" role="menuitem" tabindex="-1">Logout</a>
       </div>
     </div>

@@ -14,9 +14,12 @@ urlpatterns = [
    
     path('admin_dash/',views.admin_dash,name='admin_dashboard'),
     path('admin_project/',views.admin_project,name='admin_project_page'),
+     path('projects/delete/<int:project_id>/', views.delete_project, name='delete_project'),
+     path('projects/edit/<int:project_id>/', views.edit_project, name='edit_project'),
+
     path('admin_task/',views.admin_task,name='admin_task_page'),
     path('admin_user_manage/',views.admin_user_manage,name='admin_user_manage_page'),
-    path('admin_profile/',views.admin_profile,name='admin_profile_page'),
+    
     path('user_dash/',views.user_dash,name='user_dashboard'),
     path('user_task/',views.user_tasks,name='user_task_page'),
     path('user/update-task/<int:task_id>/', views.update_task_status, name='update_task'),
