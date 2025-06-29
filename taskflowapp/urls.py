@@ -18,6 +18,9 @@ urlpatterns = [
      path('projects/edit/<int:project_id>/', views.edit_project, name='edit_project'),
 
     path('admin_task/',views.admin_task,name='admin_task_page'),
+    path('admin_task_delete/<int:task_id>/', views.delete_task, name='delete_task'),
+    path('admin_task_edit/<int:task_id>/', views.edit_task, name='edit_task'),
+   
     path('admin_user_manage/',views.admin_user_manage,name='admin_user_manage_page'),
     
     path('user_dash/',views.user_dash,name='user_dashboard'),

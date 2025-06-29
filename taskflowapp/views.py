@@ -127,6 +127,7 @@ def user_dash(request):
     }
     return render(request, 'user_dashboard.html', context)
 
+
          
 from .models import Project, User, Task, Notification  # add Notification
 from django.utils import timezone
@@ -171,6 +172,48 @@ def admin_task(request):
         'projects': projects,
         'tasks': tasks
     })
+    
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Task
+
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    task.delete()
+    messages.success(request, "Task deleted successfully.")
+    return redirect('admin_task_page')
+
+def edit_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == 'POST':
+        task.title = request.POST.get('title')
+        task.description = request.POST.get('description')
+        task.deadline = request.POST.get('deadline')
+        task.priority = request.POST.get('priority')
+        task.status = request.POST.get('status')
+        assigned_to_id = request.POST.get('assigned_to')
+        project_id = request.POST.get('project')
+
+        task.assigned_to = User.objects.get(id=assigned_to_id)
+        task.project = Project.objects.get(id=project_id)
+
+        task.save()
+
+        messages.success(request, "Task updated successfully.")
+        return redirect('admin_task_page')
+
+    users = User.objects.filter(role='Team Member')
+    projects = Project.objects.all()
+
+    return render(request, 'edit_task_page.html', {
+        'task': task,
+        'users': users,
+        'projects': projects
+    })
+
+
+
 
 from django.shortcuts import render, redirect
 from .models import Project, User
