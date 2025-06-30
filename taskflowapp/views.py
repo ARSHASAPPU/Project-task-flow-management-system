@@ -44,29 +44,46 @@ def admin_login(request):
     return render(request, 'admin_login.html')  # Your template name here
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import User  # Use your actual User model
 
 def admin_user_manage(request):
     if request.method == 'POST':
+        user_id = request.POST.get('userId')
         name = request.POST.get('fullName')
         email = request.POST.get('email')
         password = request.POST.get('password')
         role = request.POST.get('roleSelect')
 
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'User already exists.')
+        if user_id:
+            user = User.objects.get(id=user_id)
+            user.full_name = name
+            user.email = email
+            user.role = role
+            if password:
+                user.password = password
+            user.save()
         else:
-            User.objects.create(
-                full_name=name,
-                email=email,
-                password=password,
-                role=role
-            )
-            # messages.success(request, 'User added successfully.')
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'User already exists.')
+            else:
+                User.objects.create(
+                    full_name=name,
+                    email=email,
+                    password=password,
+                    role=role
+                )
 
         return redirect('admin_user_manage_page')
 
     users = User.objects.all()
     return render(request, 'admin_user_management_page.html', {'users': users})
+
+def delete_user(request, user_id):
+    User.objects.get(id=user_id).delete()
+    return redirect('admin_user_manage_page')
+
 
 def user_login(request):
     if request.method == 'POST':
