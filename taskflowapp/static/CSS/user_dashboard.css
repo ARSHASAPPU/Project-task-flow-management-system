@@ -281,6 +281,7 @@ section > h2 {
 .button:focus {
   background-color: #5750d8;
   outline: none;
+  color: yellow;
 }
 .button:active {
   background-color: #2e267c;

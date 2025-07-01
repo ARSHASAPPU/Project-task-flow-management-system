@@ -121,6 +121,11 @@ def user_login(request):
     return render(request, 'user_login.html')
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils import timezone
+from .models import User, Task, Project, Notification
+
 def user_dash(request):
     user_id = request.session.get('user_id')
     user_role = request.session.get('user_role')
@@ -139,11 +144,39 @@ def user_dash(request):
         messages.error(request, "User not found.")
         return redirect('user_login')
 
+    # Get total number of projects the user is involved in
+    total_projects = Project.objects.filter(task__assigned_to=user).distinct().count()
+
+    # Get all tasks assigned to the user
+    user_tasks = Task.objects.filter(assigned_to=user)
+
+    # Count total tasks
+    total_tasks = user_tasks.count()
+
+    # Tasks due today
+    today = timezone.now().date()
+    tasks_due_today = user_tasks.filter(deadline=today).count()
+
+    # Unread notifications
+    unread_notifications = Notification.objects.filter(user=user, is_read=False).count()
+
+    # Latest 5 notifications (FIXED: use 'timestamp' instead of 'created_at')
+    recent_notifications = Notification.objects.filter(user=user).order_by('-timestamp')[:5]
+
+    # Latest 2 assigned tasks
+    recent_tasks = user_tasks.order_by('-deadline')[:2]
+
     context = {
         'user': user,
+        'total_projects': total_projects,
+        'total_tasks': total_tasks,
+        'tasks_due_today': tasks_due_today,
+        'unread_notifications': unread_notifications,
+        'recent_tasks': recent_tasks,
+        'recent_notifications': recent_notifications,
     }
-    return render(request, 'user_dashboard.html', context)
 
+    return render(request, 'user_dashboard.html', context)
 
          
 from .models import Project, User, Task, Notification  # add Notification

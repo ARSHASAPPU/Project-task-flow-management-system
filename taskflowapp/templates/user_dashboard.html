@@ -6,90 +6,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>User Dashboard - Project Task Management</title>
   <link rel="stylesheet" href="{% static 'CSS/user_dashboard.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
- 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <header role="banner">
     <div class="logo" aria-label="Project Task Management Logo" tabindex="0">ProjTask</div>
     <nav role="navigation" aria-label="Main navigation">
       <ul>
-        <li><a href="{% url 'user_dashboard'%}" aria-current="page">Dashboard</a></li>
-        <li><a href="{% url 'user_task_page'%}">Assigned Tasks</a></li>
-        <li><a href="{% url 'user_notify_page'%}">Notifications</a></li>
-        <li><a href="{% url 'user_profile_page'%}">Profile</a></li>
+        <li><a href="{% url 'user_dashboard' %}" aria-current="page">Dashboard</a></li>
+        <li><a href="{% url 'user_task_page' %}">Assigned Tasks</a></li>
+        <li><a href="{% url 'user_notify_page' %}">Notifications</a></li>
+        <li><a href="{% url 'user_profile_page' %}">Profile</a></li>
       </ul>
     </nav>
     <div class="profile-menu" tabindex="0">
       <button class="profile-button" aria-haspopup="true" aria-expanded="false" aria-controls="profile-menu">
-       Welcome {{ user.full_name }}<i class="fa-solid fa-user"></i>
- <span class="profile-arrow"></span>
+        Welcome {{ user.full_name }}<i class="fa-solid fa-user"></i>
+        <span class="profile-arrow"></span>
       </button>
       <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
-        <a href="{% url 'user_profile_page'%}" role="menuitem" tabindex="-1">Profile</a>
-        <a href="{% url 'home_page'%}" role="menuitem" tabindex="-1">Logout</a>
+        <a href="{% url 'user_profile_page' %}" role="menuitem" tabindex="-1">Profile</a>
+        <a href="{% url 'home_page' %}" role="menuitem" tabindex="-1">Logout</a>
       </div>
     </div>
   </header>
 
   <main class="container" role="main" tabindex="0">
-    <h1 class="page-title">User  Dashboard</h1>
+    <h1 class="page-title">User Dashboard</h1>
 
+    <!-- Overview Section -->
     <section aria-label="Dashboard Overview">
       <h2>Overview</h2>
       <div class="overview-cards">
         <div class="card" role="article" tabindex="0">
           <h3>Total Projects</h3>
-          <p class="number" id="total-projects">5</p>
+          <p class="number" id="total-projects">{{ total_projects }}</p>
         </div>
         <div class="card" role="article" tabindex="0">
           <h3>Total Tasks Assigned</h3>
-          <p class="number" id="total-tasks">15</p>
+          <p class="number" id="total-tasks">{{ total_tasks }}</p>
         </div>
         <div class="card" role="article" tabindex="0">
           <h3>Tasks Due Today</h3>
-          <p class="number" id="tasks-due-today">2</p>
+          <p class="number" id="tasks-due-today">{{ tasks_due_today }}</p>
         </div>
         <div class="card" role="article" tabindex="0">
           <h3>Unread Notifications</h3>
-          <p class="number" id="notifications-count">4</p>
+          <p class="number" id="notifications-count">{{ unread_notifications }}</p>
         </div>
       </div>
     </section>
 
+    <!-- Assigned Tasks Section -->
     <section aria-label="Assigned Tasks">
       <h2>Assigned Tasks</h2>
       <div class="card-list" aria-live="polite" aria-relevant="additions removals">
-        <article class="item-card" tabindex="0">
-          <div class="item-card-header">Design Homepage</div>
-          <div class="item-card-description">Create a new design for the homepage.</div>
-          <div class="item-card-meta">
-            Deadline: 2023-09-15 | Priority: High | Status: In Progress
-          </div>
-          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Update task status')">Update Status</button>
-        </article>
-        <article class="item-card" tabindex="0">
-          <div class="item-card-header">Write Documentation</div>
-          <div class="item-card-description">Document the new features added to the project.</div>
-          <div class="item-card-meta">
-            Deadline: 2023-09-20 | Priority: Medium | Status: Pending
-          </div>
-          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Update task status')">Update Status</button>
-        </article>
+        {% if recent_tasks %}
+          {% for task in recent_tasks %}
+            <article class="item-card" tabindex="0">
+              <div class="item-card-header">{{ task.title }}</div>
+              <div class="item-card-description">{{ task.description }}</div>
+              <div class="item-card-meta">
+                Deadline: {{ task.deadline }} | Priority: {{ task.priority }} | Status: {{ task.status }}
+              </div>
+              {% comment %} <button class="button" style="margin-top: 0.5rem;" onclick="alert('Update task status')">Update Status</button> {% endcomment %}
+              <a href="{% url 'user_task_page'  %}" class="button" style="margin-top: 0.5rem;">
+  Update Status
+</a>
+
+            </article>
+          {% endfor %}
+        {% else %}
+          <p>No recent tasks assigned.</p>
+        {% endif %}
       </div>
     </section>
 
+    <!-- Notifications Section -->
     <section aria-label="Notifications">
       <h2>Notifications</h2>
       <div class="notification-list">
-        <div class="notification-item">Task "Design Homepage" is due today.</div>
-        <div class="notification-item">New comment on your task "Write Documentation".</div>
-        <div class="notification-item">Project "Website Redesign" has been updated.</div>
-        <div class="notification-item">You have been assigned a new task.</div>
+        {% if recent_notifications %}
+          {% for note in recent_notifications %}
+            <div class="notification-item">{{ note.message }}</div>
+          {% endfor %}
+        {% else %}
+          <p>No notifications to show.</p>
+        {% endif %}
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <p>&copy; 2023 Project Task Management System. All rights reserved.</p>
@@ -104,22 +112,14 @@
 
   <script>
     // Show success modal on page load
-    {% comment %} window.addEventListener('load', () => {
-      const modal = document.getElementById('successModal');
-      if (modal) {
-        modal.classList.add('show');
-        setTimeout(() => {
-          modal.classList.remove('show');
-        }, 2500);
-      }
-    }); {% endcomment %}
-  window.addEventListener('load', () => {
+    window.addEventListener('load', () => {
       const modal = document.getElementById('successModal');
       modal.classList.add('show');
       setTimeout(() => {
         modal.classList.remove('show');
-      }, 2500); // fade out after 2.5 seconds
+      }, 2500);
     });
+
     // Profile dropdown toggling
     const profileButton = document.querySelector('.profile-button');
     const dropdownMenu = document.getElementById('profile-menu');
