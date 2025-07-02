@@ -4,8 +4,6 @@ from django.shortcuts import render
 def register_page(request):
     return render(request,'register.html')
 
-def admin_dash(request):
-    return render(request,'admin_dashboard.html')
 def admin_project(request):
     return render(request,'admin_project_page.html')
 
@@ -22,6 +20,32 @@ def role(request):
     return render(request,'role.html')
 def admin_access(request):
     return render(request,'admin_access.html')
+
+from django.utils import timezone
+from django.shortcuts import render
+from .models import Project, Task, User  # Replace `User` if you're using a custom model
+
+def admin_dash(request):
+    total_projects = Project.objects.count()
+    total_tasks = Task.objects.count()
+    today = timezone.now().date()
+    tasks_due_today = Task.objects.filter(deadline=today).count()
+
+    projects = Project.objects.order_by('-id')[:2]  # Show only latest 2
+    tasks = Task.objects.order_by('-id')[:2]        # Show only latest 2
+    users = User.objects.order_by('-id')[:2]        # Show only latest 2 users
+
+    context = {
+        'total_projects': total_projects,
+        'total_tasks': total_tasks,
+        'tasks_due_today': tasks_due_today,
+        'projects': projects,
+        'tasks': tasks,
+        'users': users,
+    }
+
+    return render(request, 'admin_dashboard.html', context)
+
 
 from django.shortcuts import render, redirect
 from django.contrib import messages

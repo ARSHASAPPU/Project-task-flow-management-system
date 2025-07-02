@@ -52,8 +52,6 @@
         <li><a href="{% url 'admin_project_page'%}">Projects</a></li>
         <li><a href="{% url 'admin_task_page'%}">Tasks</a></li>
         <li><a href="{% url 'admin_user_manage_page'%}">User  Management</a></li>
-        {% comment %} <li><a href="#">Activity Log</a></li> {% endcomment %}
-        {% comment %} <li><a href="{% url 'admin_profile_page'%}">Profile</a></li> {% endcomment %}
       </ul>
     </nav>
     <div class="profile-menu" tabindex="0">
@@ -61,7 +59,6 @@
         Admin <span class="profile-arrow"></span>
       </button>
       <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
-        {% comment %} <a href="{% url 'admin_profile_page'%}"role="menuitem" tabindex="-1">Profile</a> {% endcomment %}
         <a href="{% url 'home_page'%}" role="menuitem" tabindex="-1">Logout</a>
       </div>
     </div>
@@ -73,82 +70,75 @@
     <section aria-label="Overview metrics" class="overview-cards">
       <div class="card" role="article" tabindex="0">
         <h3>Total Projects</h3>
-        <p class="number" id="total-projects">12</p>
+        <p class="number" id="total-projects">{{ total_projects }}</p>
       </div>
       <div class="card" role="article" tabindex="0">
         <h3>Total Tasks</h3>
-        <p class="number" id="total-tasks">78</p>
+        <p class="number" id="total-tasks">{{ total_tasks }}</p>
       </div>
       <div class="card" role="article" tabindex="0">
         <h3>Tasks Due Today</h3>
-        <p class="number" id="tasks-due-today">8</p>
-      </div>
-      <div class="card" role="article" tabindex="0">
-        <h3>Unread Notifications</h3>
-        <p class="number" id="notifications-count">3</p>
+        <p class="number" id="tasks-due-today">{{ tasks_due_today }}</p>
       </div>
     </section>
 
     <section aria-label="Projects management">
       <h2>Projects</h2>
-      <button class="button" onclick="alert('Add new project form will appear.')">Add New Project</button>
+      <a href="{% url 'admin_project_page' %}" class="button">Add New Project</a>
+
       <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        {% for project in projects %}
         <article class="item-card" tabindex="0">
-          <div class="item-card-header">Website Redesign</div>
-          <div class="item-card-description">Revamp the landing page and improve UX.</div>
+          <div class="item-card-header">{{ project.name }}</div>
+          <div class="item-card-description">{{ project.description }}</div>
           <div class="item-card-meta">
-            Start: 2023-06-01 | End: 2023-06-30 | Assigned members: 5
+            Start: {{ project.start_date }} | End: {{ project.end_date }} | Assigned members: {{ project.member_count }}
           </div>
-          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit project details')">View</button>
+          <a href="{% url 'admin_project_page'  %}" class="button" style="margin-top: 0.5rem;">View</a>
+
         </article>
-        <article class="item-card" tabindex="0">
-          <div class="item-card-header">Mobile App Launch</div>
-          <div class="item-card-description">Develop and launch the iOS and Android app.</div>
-          <div class="item-card-meta">
-            Start: 2023-07-01 | End: 2023-08-15 | Assigned members: 8
-          </div>
-          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit project details')">View</button>
-        </article>
+        {% empty %}
+        <p>No projects found.</p>
+        {% endfor %}
       </div>
     </section>
 
     <section aria-label="Tasks management">
       <h2>Tasks</h2>
-      <button class="button" onclick="alert('Add new task form will appear.')">Add New Task</button>
+      <a href="{% url 'admin_task_page' %}" class="button">Add New Project</a>
+
       <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        {% for task in tasks %}
         <article class="item-card" tabindex="0">
-          <div class="item-card-header">Implement authentication</div>
-          <div class="item-card-description">Create secure login and registration pages.</div>
+          <div class="item-card-header">{{ task.title }}</div>
+          <div class="item-card-description">{{ task.description }}</div>
           <div class="item-card-meta">
-            Deadline: 2023-06-05 | Priority: High | Status: In Progress
+            Deadline: {{ task.deadline|date:"Y-m-d" }} | Priority: {{ task.priority }} | Status: {{ task.status }}
           </div>
-          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit task details')">View</button>
+          <a href="{% url 'admin_task_page' %}" class="button" style="margin-top: 0.5rem;">View</a>
+
         </article>
-        <article class="item-card" tabindex="0">
-          <div class="item-card-header">Database schema design</div>
-          <div class="item-card-description">Design the database for users, projects, and tasks.</div>
-          <div class="item-card-meta">
-            Deadline: 2023-06-10 | Priority: Medium | Status: Pending
-          </div>
-          <button class="button" style="margin-top: 0.5rem;" onclick="alert('Edit task details')">View</button>
-        </article>
+        {% empty %}
+        <p>No tasks available.</p>
+        {% endfor %}
       </div>
     </section>
 
-    <section aria-label="User  management">
+    <section aria-label="User management">
       <h2>User Management</h2>
-      <button class="button" onclick="alert('Add new user form will appear.')">Add New User</button>
+     <a href="{% url 'admin_user_manage_page' %}" class="button">Add New Project</a>
+
       <div class="card-list" aria-live="polite" aria-relevant="additions removals">
+        {% for user in users %}
         <article class="item-card" tabindex="0">
-          <div class="item-card-header">Alice Johnson</div>
-          <div class="item-card-description">Role: Team Member | Joined: 2023-05-10</div>
-          <button class="button danger" style="margin-top: 0.5rem;" onclick="alert('Delete user Alice')">Delete</button>
+          <div class="item-card-header">{{ user.name }}</div>
+          <div class="item-card-description">Username: {{ user.full_name }} | Role: {{ user.role }}</div>
+          <a href="{% url 'admin_user_manage_page' %}" class="button" style="margin-top: 0.5rem;">View</a>
+
         </article>
-        <article class="item-card" tabindex="0">
-          <div class="item-card-header">David Smith</div>
-          <div class="item-card-description">Role: Admin | Joined: 2023-04-21</div>
-          <button class="button danger" style="margin-top: 0.5rem;" onclick="alert('Delete user David')">Delete</button>
-        </article>
+        {% empty %}
+        <p>No users found.</p>
+        {% endfor %}
       </div>
     </section>
   </main>
@@ -159,23 +149,20 @@
     </div>
   </footer>
 
-  <!-- ✅ Success Modal -->
   <div id="successModal" class="success-modal">
     <div class="checkmark">✅</div>
     <div>Logged in successfully</div>
   </div>
 
   <script>
-    // Show success modal on page load
     window.addEventListener('load', () => {
       const modal = document.getElementById('successModal');
       modal.classList.add('show');
       setTimeout(() => {
         modal.classList.remove('show');
-      }, 2500); // fade out after 2.5 seconds
+      }, 2500);
     });
 
-    // Profile dropdown toggling
     const profileButton = document.querySelector('.profile-button');
     const dropdownMenu = document.getElementById('profile-menu');
 
