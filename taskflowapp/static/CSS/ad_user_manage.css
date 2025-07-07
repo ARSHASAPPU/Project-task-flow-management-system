@@ -164,3 +164,152 @@ body {
   color: #a78bfa !important;
   user-select: none;
 }
+
+
+/* Header Layout */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: #111827;
+}
+
+/* Navigation Links */
+nav ul {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li a {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #374151;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease;
+}
+
+nav li a:hover,
+nav li a:focus {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+/* Toggle Button for Mobile */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  background: none;
+  border: none;
+  margin-left: 1rem;
+}
+
+.nav-toggle .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #374151;
+  margin: 3px 0;
+  transition: all 0.3s ease;
+}
+
+/* Profile Menu */
+.profile-menu {
+  position: relative;
+}
+
+.profile-button {
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.profile-arrow {
+  border: solid #374151;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  margin-left: 0.25rem;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
+  min-width: 120px;
+  margin-top: 0.5rem;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-menu a {
+  padding: 0.75rem 1rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.dropdown-menu a:hover {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 999;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
+  }
+
+  nav ul.show {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover, a:focus {
+  color: #1d4ed8;
+  outline: none;
+}

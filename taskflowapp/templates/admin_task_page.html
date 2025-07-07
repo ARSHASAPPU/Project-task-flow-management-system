@@ -9,8 +9,33 @@
   <link rel="stylesheet" href="{% static 'CSS/admin_task.css' %}" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body class="bg-dark text-light">
 
+
+<body class="bg-dark text-light">
+<header role="banner">
+  <div class="logo" aria-label="Project Task Management Logo" tabindex="0">TaskFlow</div>
+  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </button>
+  <nav role="navigation" aria-label="Main navigation">
+    <ul>
+      <li><a href="{% url 'admin_dashboard'%}" aria-current="page">Dashboard</a></li>
+      <li><a href="{% url 'admin_project_page'%}">Projects</a></li>
+      <li><a href="{% url 'admin_task_page'%}">Tasks</a></li>
+      <li><a href="{% url 'admin_user_manage_page'%}">User  Management</a></li>
+    </ul>
+  </nav>
+  <div class="profile-menu" tabindex="0">
+    <button class="profile-button" aria-haspopup="true" aria-expanded="false" aria-controls="profile-menu">
+      Admin <span class="profile-arrow"></span>
+    </button>
+    <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
+      <a href="{% url 'home_page'%}" role="menuitem" tabindex="-1">Logout</a>
+    </div>
+  </div>
+</header>
   <div class="container my-4">
     <h2 class="text-center mb-4 text-purple">Task Management</h2>
 
@@ -210,6 +235,35 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script >
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  const profileButton = document.querySelector('.profile-button');
+  const dropdownMenu = document.getElementById('profile-menu');
+
+  profileButton.addEventListener('click', () => {
+    const expanded = profileButton.getAttribute('aria-expanded') === 'true' || false;
+    profileButton.setAttribute('aria-expanded', !expanded);
+    dropdownMenu.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+      dropdownMenu.classList.remove('show');
+      profileButton.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('nav ul');
+
+  navToggle.addEventListener('click', () => {
+    const expanded = navToggle.getAttribute('aria-expanded') === 'true' || false;
+    navToggle.setAttribute('aria-expanded', !expanded);
+    navMenu.classList.toggle('show');
+  });
+});
+
+  </script>
 </body>
 </html>

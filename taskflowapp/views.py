@@ -7,8 +7,6 @@ def register_page(request):
 def admin_project(request):
     return render(request,'admin_project_page.html')
 
-
-
 def user_profile(request):
     return render(request,'user_profile.html')
 
