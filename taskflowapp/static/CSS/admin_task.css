@@ -325,3 +325,38 @@ a:hover, a:focus {
 .alert .btn-close:hover {
   opacity: 1;
 }
+
+
+/* Make body full height and flex container */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make content area grow to push footer down */
+body > .container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Optional: let card grow if needed */
+body > .container > .card {
+  flex-grow: 1;
+}
+
+/* Footer stays at the bottom */
+.footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  padding: 1rem 0;
+  width: 100%;
+  flex-shrink: 0;
+}
