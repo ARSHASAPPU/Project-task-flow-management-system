@@ -278,3 +278,50 @@ a:hover, a:focus {
   color: #1d4ed8;
   outline: none;
 }
+/* ---------- Django Message Alerts ---------- */
+.alert {
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.25rem;
+  color: #fff;
+  position: relative;
+}
+
+/* Success Message (Green) */
+.alert-success {
+  background: linear-gradient(135deg, #16a34a, #22c55e); /* emerald/green */
+  border: none;
+}
+
+/* Error Message (Red) */
+.alert-danger,
+.alert-error {
+  background: linear-gradient(135deg, #dc2626, #ef4444); /* red */
+  border: none;
+}
+
+/* Info Message (Blue) */
+.alert-info {
+  background: linear-gradient(135deg, #2563eb, #3b82f6); /* blue */
+  border: none;
+}
+
+/* Warning Message (Yellow/Orange) */
+.alert-warning {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24); /* amber */
+  border: none;
+  color: #111;
+}
+
+/* Close button (white or dark depending on context) */
+.alert .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.alert .btn-close:hover {
+  opacity: 1;
+}

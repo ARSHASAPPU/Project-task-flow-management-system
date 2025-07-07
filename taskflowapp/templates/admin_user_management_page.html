@@ -44,6 +44,17 @@
  
     
   <h1 class="display-5 fw-bold text-purple text-center my-4">User Management</h1>
+ <!-- Alert Messages -->
+<div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
 
 
   <main class="container bg-secondary rounded-4 p-4 shadow-lg">
