@@ -360,3 +360,52 @@ body > .container > .card {
   width: 100%;
   flex-shrink: 0;
 }
+
+
+/* Status Badge Colors */
+.status-badge {
+  padding: 0.35em 0.7em;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-todo {
+  background-color: #dc2626; /* Red */
+}
+
+.status-progress {
+  background-color: #f59e0b; /* Yellow */
+  color: #111;
+}
+
+.status-completed {
+  background-color: #16a34a; /* Green */
+}
+
+/* Priority Badge Colors */
+.priority-badge {
+  padding: 0.35em 0.7em;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.priority-high {
+  background-color: #dc2626; /* Red */
+}
+
+.priority-medium {
+  background-color: #facc15; /* Yellow */
+  color: #111;
+}
+
+.priority-low {
+  background-color: #16a34a; /* Green */
+}

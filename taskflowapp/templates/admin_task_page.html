@@ -83,8 +83,23 @@
                 <td>{{ task.title }}</td>
                 <td>{{ task.assigned_to.full_name }}</td>
                 <td>{{ task.project.name }}</td>
-                <td><span class="badge bg-warning">{{ task.status }}</span></td>
-                <td><span class="badge bg-danger">{{ task.priority }}</span></td>
+                <td>
+  <span class="status-badge 
+    {% if task.status == 'To Do' %}status-todo
+    {% elif task.status == 'In Progress' %}status-progress
+    {% elif task.status == 'Completed' %}status-completed{% endif %}">
+    {{ task.status }}
+  </span>
+</td>
+<td>
+  <span class="priority-badge 
+    {% if task.priority == 'High' %}priority-high
+    {% elif task.priority == 'Medium' %}priority-medium
+    {% elif task.priority == 'Low' %}priority-low{% endif %}">
+    {{ task.priority }}
+  </span>
+</td>
+
                 <td>{{ task.deadline }}</td>
                 <td>
                   <button type="button" class="btn btn-icon btn-icon-edit me-2" title="Edit Task" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ task.id }}">
