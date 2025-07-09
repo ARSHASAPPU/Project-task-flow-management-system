@@ -72,8 +72,8 @@
 
   /* Custom progress bar fill with gradient */
   .progress-bar-custom {
-    background: #e5e7eb;
-    border-radius: 12px;
+    background: #a6afc0;
+    border-radius: 12px ;
     overflow: hidden;
     height: 20px;
   }
