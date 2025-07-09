@@ -244,7 +244,9 @@ def admin_task(request):
         'projects': projects,
         'tasks': tasks
     })
-    
+
+
+
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from .models import Task
@@ -398,6 +400,7 @@ def user_tasks(request):
         'total_tasks': total_tasks,
         'selected_project': selected_project,
         'selected_priority': selected_priority,
+        'user': user, 
     }
     return render(request, 'user_task_page.html', context)
 

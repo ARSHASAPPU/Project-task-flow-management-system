@@ -1,0 +1,43 @@
+{% load static %}
+<html>
+<link rel="stylesheet" href="{% static 'CSS/user_nav.css' %}">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<header role="banner">
+    <div class="logo" aria-label="Project Task Management Logo" tabindex="0">TaskFlow</div>
+    <nav role="navigation" aria-label="Main navigation">
+      <ul>
+        <li><a href="{% url 'user_dashboard' %}" aria-current="page">Dashboard</a></li>
+        <li><a href="{% url 'user_task_page' %}">Assigned Tasks</a></li>
+        <li><a href="{% url 'user_notify_page' %}">Notifications</a></li>
+        <li><a href="{% url 'user_profile_page' %}">Profile</a></li>
+      </ul>
+    </nav>
+    <div class="profile-menu" tabindex="0">
+      <button class="profile-button" aria-haspopup="true" aria-expanded="false" aria-controls="profile-menu">
+        Welcome {{ user.full_name }}<i class="fa-solid fa-user"></i>
+        <span class="profile-arrow"></span>
+      </button>
+      <div id="profile-menu" class="dropdown-menu" role="menu" aria-label="Profile menu">
+        <a href="{% url 'user_profile_page' %}" role="menuitem" tabindex="-1">Profile</a>
+        <a href="{% url 'home_page' %}" role="menuitem" tabindex="-1">Logout</a>
+      </div>
+    </div>
+  </header>
+  <script>
+  const profileButton = document.querySelector('.profile-button');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+
+  profileButton?.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('show');
+  });
+
+  // Optional: hide menu when clicking outside
+  window.addEventListener('click', function (e) {
+    if (!profileButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.remove('show');
+    }
+  });
+</script>
+
+</html>
